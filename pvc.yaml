@@ -1,0 +1,230 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    annotations:
+      pv.kubernetes.io/bind-completed: "yes"
+      pv.kubernetes.io/bound-by-controller: "yes"
+      volume.beta.kubernetes.io/storage-provisioner: kubernetes.io/gce-pd
+    creationTimestamp: "2019-12-07T13:28:00Z"
+    finalizers:
+    - kubernetes.io/pvc-protection
+    labels:
+      app: logstash
+    name: data-logstash-0
+    namespace: user111
+    resourceVersion: "526059"
+    selfLink: /api/v1/namespaces/user111/persistentvolumeclaims/data-logstash-0
+    uid: 63abc272-18f5-11ea-94c4-42010a9c0043
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 2Gi
+    storageClassName: standard
+    volumeMode: Filesystem
+    volumeName: pvc-63abc272-18f5-11ea-94c4-42010a9c0043
+  status:
+    accessModes:
+    - ReadWriteOnce
+    capacity:
+      storage: 2Gi
+    phase: Bound
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    annotations:
+      pv.kubernetes.io/bind-completed: "yes"
+      pv.kubernetes.io/bound-by-controller: "yes"
+      volume.beta.kubernetes.io/storage-provisioner: kubernetes.io/gce-pd
+    creationTimestamp: "2019-12-07T12:37:05Z"
+    finalizers:
+    - kubernetes.io/pvc-protection
+    labels:
+      app: kafka
+    name: datadir-kafka-0
+    namespace: user111
+    resourceVersion: "513538"
+    selfLink: /api/v1/namespaces/user111/persistentvolumeclaims/datadir-kafka-0
+    uid: 46d5ea39-18ee-11ea-94c4-42010a9c0043
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 10Gi
+    storageClassName: standard
+    volumeMode: Filesystem
+    volumeName: pvc-46d5ea39-18ee-11ea-94c4-42010a9c0043
+  status:
+    accessModes:
+    - ReadWriteOnce
+    capacity:
+      storage: 10Gi
+    phase: Bound
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    annotations:
+      pv.kubernetes.io/bind-completed: "yes"
+      pv.kubernetes.io/bound-by-controller: "yes"
+      volume.beta.kubernetes.io/storage-provisioner: kubernetes.io/gce-pd
+    creationTimestamp: "2019-12-07T12:41:08Z"
+    finalizers:
+    - kubernetes.io/pvc-protection
+    labels:
+      app: kafka
+    name: datadir-kafka-1
+    namespace: user111
+    resourceVersion: "514575"
+    selfLink: /api/v1/namespaces/user111/persistentvolumeclaims/datadir-kafka-1
+    uid: d7405604-18ee-11ea-94c4-42010a9c0043
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 10Gi
+    storageClassName: standard
+    volumeMode: Filesystem
+    volumeName: pvc-d7405604-18ee-11ea-94c4-42010a9c0043
+  status:
+    accessModes:
+    - ReadWriteOnce
+    capacity:
+      storage: 10Gi
+    phase: Bound
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    annotations:
+      pv.kubernetes.io/bind-completed: "yes"
+      pv.kubernetes.io/bound-by-controller: "yes"
+      volume.beta.kubernetes.io/storage-provisioner: kubernetes.io/gce-pd
+    creationTimestamp: "2019-12-07T12:41:49Z"
+    finalizers:
+    - kubernetes.io/pvc-protection
+    labels:
+      app: kafka
+    name: datadir-kafka-2
+    namespace: user111
+    resourceVersion: "514764"
+    selfLink: /api/v1/namespaces/user111/persistentvolumeclaims/datadir-kafka-2
+    uid: f03b1ba3-18ee-11ea-94c4-42010a9c0043
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 10Gi
+    storageClassName: standard
+    volumeMode: Filesystem
+    volumeName: pvc-f03b1ba3-18ee-11ea-94c4-42010a9c0043
+  status:
+    accessModes:
+    - ReadWriteOnce
+    capacity:
+      storage: 10Gi
+    phase: Bound
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    annotations:
+      pv.kubernetes.io/bind-completed: "yes"
+      pv.kubernetes.io/bound-by-controller: "yes"
+      volume.beta.kubernetes.io/storage-provisioner: kubernetes.io/gce-pd
+    creationTimestamp: "2019-12-07T12:25:06Z"
+    finalizers:
+    - kubernetes.io/pvc-protection
+    labels:
+      app: elasticsearch
+    name: elastic-data-elasticsearch-0
+    namespace: user111
+    resourceVersion: "510515"
+    selfLink: /api/v1/namespaces/user111/persistentvolumeclaims/elastic-data-elasticsearch-0
+    uid: 9a0cd85f-18ec-11ea-94c4-42010a9c0043
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 10Gi
+    storageClassName: standard
+    volumeMode: Filesystem
+    volumeName: pvc-9a0cd85f-18ec-11ea-94c4-42010a9c0043
+  status:
+    accessModes:
+    - ReadWriteOnce
+    capacity:
+      storage: 10Gi
+    phase: Bound
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    annotations:
+      pv.kubernetes.io/bind-completed: "yes"
+      pv.kubernetes.io/bound-by-controller: "yes"
+      volume.beta.kubernetes.io/storage-provisioner: kubernetes.io/gce-pd
+    creationTimestamp: "2019-12-07T13:28:00Z"
+    finalizers:
+    - kubernetes.io/pvc-protection
+    labels:
+      app: prometheus
+    name: prometheus-config-prometheus-0
+    namespace: user111
+    resourceVersion: "526065"
+    selfLink: /api/v1/namespaces/user111/persistentvolumeclaims/prometheus-config-prometheus-0
+    uid: 63e01d65-18f5-11ea-94c4-42010a9c0043
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 500Mi
+    storageClassName: standard
+    volumeMode: Filesystem
+    volumeName: pvc-63e01d65-18f5-11ea-94c4-42010a9c0043
+  status:
+    accessModes:
+    - ReadWriteOnce
+    capacity:
+      storage: 1Gi
+    phase: Bound
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    annotations:
+      pv.kubernetes.io/bind-completed: "yes"
+      pv.kubernetes.io/bound-by-controller: "yes"
+      volume.beta.kubernetes.io/storage-provisioner: kubernetes.io/gce-pd
+    creationTimestamp: "2019-12-07T13:28:00Z"
+    finalizers:
+    - kubernetes.io/pvc-protection
+    labels:
+      app: prometheus
+    name: prometheus-data-prometheus-0
+    namespace: user111
+    resourceVersion: "526070"
+    selfLink: /api/v1/namespaces/user111/persistentvolumeclaims/prometheus-data-prometheus-0
+    uid: 63e0a660-18f5-11ea-94c4-42010a9c0043
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 10Gi
+    storageClassName: standard
+    volumeMode: Filesystem
+    volumeName: pvc-63e0a660-18f5-11ea-94c4-42010a9c0043
+  status:
+    accessModes:
+    - ReadWriteOnce
+    capacity:
+      storage: 10Gi
+    phase: Bound
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""

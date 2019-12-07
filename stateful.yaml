@@ -1,0 +1,680 @@
+apiVersion: v1
+items:
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"StatefulSet","metadata":{"annotations":{},"name":"elasticsearch","namespace":"user111"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"elasticsearch"}},"serviceName":"elasticsearch","template":{"metadata":{"labels":{"app":"elasticsearch"}},"spec":{"containers":[{"env":[{"name":"cluster.name","value":"kubernetes-logging"},{"name":"node.name","valueFrom":{"fieldRef":{"fieldPath":"metadata.name"}}},{"name":"discovery.seed_hosts","value":"elasticsearch-0.elasticsearch"},{"name":"cluster.initial_master_nodes","value":"elasticsearch-0"},{"name":"ES_JAVA_OPTS","value":"-Xms512m -Xmx512m"}],"image":"docker.elastic.co/elasticsearch/elasticsearch:7.2.0","name":"elasticsearch","ports":[{"containerPort":9200,"protocol":"TCP"},{"containerPort":9300,"protocol":"TCP"}],"resources":{"limits":{"cpu":"1000m"},"requests":{"cpu":"100m"}},"volumeMounts":[{"mountPath":"/usr/share/elasticsearch/data","name":"elastic-data"}]}],"initContainers":[{"command":["sh","-c","chown -R 1000:1000 /usr/share/elasticsearch/data"],"image":"busybox","name":"fix-permissions","securityContext":{"privileged":true},"volumeMounts":[{"mountPath":"/usr/share/elasticsearch/data","name":"elastic-data"}]},{"command":["sysctl","-w","vm.max_map_count=262144"],"image":"busybox","name":"increase-vm-max-map","securityContext":{"privileged":true}}]}},"volumeClaimTemplates":[{"metadata":{"labels":{"app":"elasticsearch"},"name":"elastic-data"},"spec":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"10Gi"}}}}]}}
+    creationTimestamp: "2019-12-07T12:25:06Z"
+    generation: 1
+    name: elasticsearch
+    namespace: user111
+    resourceVersion: "510781"
+    selfLink: /apis/apps/v1/namespaces/user111/statefulsets/elasticsearch
+    uid: 9a0a213d-18ec-11ea-94c4-42010a9c0043
+  spec:
+    podManagementPolicy: OrderedReady
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: elasticsearch
+    serviceName: elasticsearch
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: elasticsearch
+      spec:
+        containers:
+        - env:
+          - name: cluster.name
+            value: kubernetes-logging
+          - name: node.name
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.name
+          - name: discovery.seed_hosts
+            value: elasticsearch-0.elasticsearch
+          - name: cluster.initial_master_nodes
+            value: elasticsearch-0
+          - name: ES_JAVA_OPTS
+            value: -Xms512m -Xmx512m
+          image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
+          imagePullPolicy: IfNotPresent
+          name: elasticsearch
+          ports:
+          - containerPort: 9200
+            protocol: TCP
+          - containerPort: 9300
+            protocol: TCP
+          resources:
+            limits:
+              cpu: "1"
+            requests:
+              cpu: 100m
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /usr/share/elasticsearch/data
+            name: elastic-data
+        dnsPolicy: ClusterFirst
+        initContainers:
+        - command:
+          - sh
+          - -c
+          - chown -R 1000:1000 /usr/share/elasticsearch/data
+          image: busybox
+          imagePullPolicy: Always
+          name: fix-permissions
+          resources: {}
+          securityContext:
+            privileged: true
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /usr/share/elasticsearch/data
+            name: elastic-data
+        - command:
+          - sysctl
+          - -w
+          - vm.max_map_count=262144
+          image: busybox
+          imagePullPolicy: Always
+          name: increase-vm-max-map
+          resources: {}
+          securityContext:
+            privileged: true
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    updateStrategy:
+      rollingUpdate:
+        partition: 0
+      type: RollingUpdate
+    volumeClaimTemplates:
+    - metadata:
+        creationTimestamp: null
+        labels:
+          app: elasticsearch
+        name: elastic-data
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 10Gi
+        volumeMode: Filesystem
+      status:
+        phase: Pending
+  status:
+    collisionCount: 0
+    currentReplicas: 1
+    currentRevision: elasticsearch-9b5c5b58
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updateRevision: elasticsearch-9b5c5b58
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"StatefulSet","metadata":{"annotations":{},"name":"grafana","namespace":"user111"},"spec":{"replicas":null,"selector":{"matchLabels":{"app":"grafana"}},"serviceName":"grafana","template":{"metadata":{"labels":{"app":"grafana"}},"spec":{"containers":[{"image":"grafana/grafana","name":"grafana","ports":[{"containerPort":3000,"name":"web"}]}]}}}}
+    creationTimestamp: "2019-12-07T11:53:43Z"
+    generation: 1
+    name: grafana
+    namespace: user111
+    resourceVersion: "502653"
+    selfLink: /apis/apps/v1/namespaces/user111/statefulsets/grafana
+    uid: 37f75133-18e8-11ea-94c4-42010a9c0043
+  spec:
+    podManagementPolicy: OrderedReady
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: grafana
+    serviceName: grafana
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: grafana
+      spec:
+        containers:
+        - image: grafana/grafana
+          imagePullPolicy: Always
+          name: grafana
+          ports:
+          - containerPort: 3000
+            name: web
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    updateStrategy:
+      rollingUpdate:
+        partition: 0
+      type: RollingUpdate
+  status:
+    collisionCount: 0
+    currentReplicas: 1
+    currentRevision: grafana-786cd7794c
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updateRevision: grafana-786cd7794c
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1beta1","kind":"StatefulSet","metadata":{"annotations":{},"name":"kafka","namespace":"user111"},"spec":{"replicas":3,"serviceName":"kafka-svc","template":{"metadata":{"labels":{"app":"kafka"}},"spec":{"affinity":{"podAffinity":{"preferredDuringSchedulingIgnoredDuringExecution":[{"podAffinityTerm":{"labelSelector":{"matchExpressions":[{"key":"app","operator":"In","values":["zookeeper"]}]},"topologyKey":"kubernetes.io/hostname"},"weight":1}]},"podAntiAffinity":{"requiredDuringSchedulingIgnoredDuringExecution":[{"labelSelector":{"matchExpressions":[{"key":"app","operator":"In","values":["kafka"]}]},"topologyKey":"kubernetes.io/hostname"}]}},"containers":[{"command":["sh","-c","exec kafka-server-start.sh /opt/kafka/config/server.properties --override broker.id=${HOSTNAME##*-} --override listeners=PLAINTEXT://:9093 --override zookeeper.connect=zookeeper:2181 --override log.dir=/var/lib/kafka --override auto.create.topics.enable=true --override auto.leader.rebalance.enable=true --override background.threads=10 --override compression.type=producer --override delete.topic.enable=false --override leader.imbalance.check.interval.seconds=300 --override leader.imbalance.per.broker.percentage=10 --override log.flush.interval.messages=9223372036854775807 --override log.flush.offset.checkpoint.interval.ms=60000 --override log.flush.scheduler.interval.ms=9223372036854775807 --override log.retention.bytes=-1 --override log.retention.hours=168 --override log.roll.hours=168 --override log.roll.jitter.hours=0 --override log.segment.bytes=1073741824 --override log.segment.delete.delay.ms=60000 --override message.max.bytes=1000012 --override min.insync.replicas=1 --override num.io.threads=8 --override num.network.threads=3 --override num.recovery.threads.per.data.dir=1 --override num.replica.fetchers=1 --override offset.metadata.max.bytes=4096 --override offsets.commit.required.acks=-1 --override offsets.commit.timeout.ms=5000 --override offsets.load.buffer.size=5242880 --override offsets.retention.check.interval.ms=600000 --override offsets.retention.minutes=1440 --override offsets.topic.compression.codec=0 --override offsets.topic.num.partitions=50 --override offsets.topic.replication.factor=3 --override offsets.topic.segment.bytes=104857600 --override queued.max.requests=500 --override quota.consumer.default=9223372036854775807 --override quota.producer.default=9223372036854775807 --override replica.fetch.min.bytes=1 --override replica.fetch.wait.max.ms=500 --override replica.high.watermark.checkpoint.interval.ms=5000 --override replica.lag.time.max.ms=10000 --override replica.socket.receive.buffer.bytes=65536 --override replica.socket.timeout.ms=30000 --override request.timeout.ms=30000 --override socket.receive.buffer.bytes=102400 --override socket.request.max.bytes=104857600 --override socket.send.buffer.bytes=102400 --override unclean.leader.election.enable=true --override zookeeper.session.timeout.ms=6000 --override zookeeper.set.acl=false --override broker.id.generation.enable=true --override connections.max.idle.ms=600000 --override controlled.shutdown.enable=true --override controlled.shutdown.max.retries=3 --override controlled.shutdown.retry.backoff.ms=5000 --override controller.socket.timeout.ms=30000 --override default.replication.factor=1 --override fetch.purgatory.purge.interval.requests=1000 --override group.max.session.timeout.ms=300000 --override group.min.session.timeout.ms=6000 --override inter.broker.protocol.version=0.10.2-IV0 --override log.cleaner.backoff.ms=15000 --override log.cleaner.dedupe.buffer.size=134217728 --override log.cleaner.delete.retention.ms=86400000 --override log.cleaner.enable=true --override log.cleaner.io.buffer.load.factor=0.9 --override log.cleaner.io.buffer.size=524288 --override log.cleaner.io.max.bytes.per.second=1.7976931348623157E308 --override log.cleaner.min.cleanable.ratio=0.5 --override log.cleaner.min.compaction.lag.ms=0 --override log.cleaner.threads=1 --override log.cleanup.policy=delete --override log.index.interval.bytes=4096 --override log.index.size.max.bytes=10485760 --override log.message.timestamp.difference.max.ms=9223372036854775807 --override log.message.timestamp.type=CreateTime --override log.preallocate=false --override log.retention.check.interval.ms=300000 --override max.connections.per.ip=2147483647 --override num.partitions=1 --override producer.purgatory.purge.interval.requests=1000 --override replica.fetch.backoff.ms=1000 --override replica.fetch.max.bytes=1048576 --override replica.fetch.response.max.bytes=10485760 --override reserved.broker.max.id=1000 "],"env":[{"name":"KAFKA_HEAP_OPTS","value":"-Xmx512M -Xms512M"},{"name":"KAFKA_OPTS","value":"-Dlogging.level=INFO"}],"image":"gcr.io/google_samples/k8skafka:v1","imagePullPolicy":"Always","name":"k8skafka","ports":[{"containerPort":9093,"name":"server"}],"readinessProbe":{"exec":{"command":["sh","-c","/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server=localhost:9093"]}},"resources":{"requests":{"cpu":"500m","memory":"1Gi"}},"volumeMounts":[{"mountPath":"/var/lib/kafka","name":"datadir"}]}],"securityContext":{"fsGroup":1000,"runAsUser":1000},"terminationGracePeriodSeconds":300}},"volumeClaimTemplates":[{"metadata":{"name":"datadir"},"spec":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"10Gi"}}}}]}}
+    creationTimestamp: "2019-12-07T12:40:47Z"
+    generation: 1
+    labels:
+      app: kafka
+    name: kafka
+    namespace: user111
+    resourceVersion: "514945"
+    selfLink: /apis/apps/v1/namespaces/user111/statefulsets/kafka
+    uid: cabef6ec-18ee-11ea-94c4-42010a9c0043
+  spec:
+    podManagementPolicy: OrderedReady
+    replicas: 3
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: kafka
+    serviceName: kafka-svc
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: kafka
+      spec:
+        affinity:
+          podAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                    - zookeeper
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+          podAntiAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - kafka
+              topologyKey: kubernetes.io/hostname
+        containers:
+        - command:
+          - sh
+          - -c
+          - 'exec kafka-server-start.sh /opt/kafka/config/server.properties --override
+            broker.id=${HOSTNAME##*-} --override listeners=PLAINTEXT://:9093 --override
+            zookeeper.connect=zookeeper:2181 --override log.dir=/var/lib/kafka --override
+            auto.create.topics.enable=true --override auto.leader.rebalance.enable=true
+            --override background.threads=10 --override compression.type=producer
+            --override delete.topic.enable=false --override leader.imbalance.check.interval.seconds=300
+            --override leader.imbalance.per.broker.percentage=10 --override log.flush.interval.messages=9223372036854775807
+            --override log.flush.offset.checkpoint.interval.ms=60000 --override log.flush.scheduler.interval.ms=9223372036854775807
+            --override log.retention.bytes=-1 --override log.retention.hours=168 --override
+            log.roll.hours=168 --override log.roll.jitter.hours=0 --override log.segment.bytes=1073741824
+            --override log.segment.delete.delay.ms=60000 --override message.max.bytes=1000012
+            --override min.insync.replicas=1 --override num.io.threads=8 --override
+            num.network.threads=3 --override num.recovery.threads.per.data.dir=1 --override
+            num.replica.fetchers=1 --override offset.metadata.max.bytes=4096 --override
+            offsets.commit.required.acks=-1 --override offsets.commit.timeout.ms=5000
+            --override offsets.load.buffer.size=5242880 --override offsets.retention.check.interval.ms=600000
+            --override offsets.retention.minutes=1440 --override offsets.topic.compression.codec=0
+            --override offsets.topic.num.partitions=50 --override offsets.topic.replication.factor=3
+            --override offsets.topic.segment.bytes=104857600 --override queued.max.requests=500
+            --override quota.consumer.default=9223372036854775807 --override quota.producer.default=9223372036854775807
+            --override replica.fetch.min.bytes=1 --override replica.fetch.wait.max.ms=500
+            --override replica.high.watermark.checkpoint.interval.ms=5000 --override
+            replica.lag.time.max.ms=10000 --override replica.socket.receive.buffer.bytes=65536
+            --override replica.socket.timeout.ms=30000 --override request.timeout.ms=30000
+            --override socket.receive.buffer.bytes=102400 --override socket.request.max.bytes=104857600
+            --override socket.send.buffer.bytes=102400 --override unclean.leader.election.enable=true
+            --override zookeeper.session.timeout.ms=6000 --override zookeeper.set.acl=false
+            --override broker.id.generation.enable=true --override connections.max.idle.ms=600000
+            --override controlled.shutdown.enable=true --override controlled.shutdown.max.retries=3
+            --override controlled.shutdown.retry.backoff.ms=5000 --override controller.socket.timeout.ms=30000
+            --override default.replication.factor=1 --override fetch.purgatory.purge.interval.requests=1000
+            --override group.max.session.timeout.ms=300000 --override group.min.session.timeout.ms=6000
+            --override inter.broker.protocol.version=0.10.2-IV0 --override log.cleaner.backoff.ms=15000
+            --override log.cleaner.dedupe.buffer.size=134217728 --override log.cleaner.delete.retention.ms=86400000
+            --override log.cleaner.enable=true --override log.cleaner.io.buffer.load.factor=0.9
+            --override log.cleaner.io.buffer.size=524288 --override log.cleaner.io.max.bytes.per.second=1.7976931348623157E308
+            --override log.cleaner.min.cleanable.ratio=0.5 --override log.cleaner.min.compaction.lag.ms=0
+            --override log.cleaner.threads=1 --override log.cleanup.policy=delete
+            --override log.index.interval.bytes=4096 --override log.index.size.max.bytes=10485760
+            --override log.message.timestamp.difference.max.ms=9223372036854775807
+            --override log.message.timestamp.type=CreateTime --override log.preallocate=false
+            --override log.retention.check.interval.ms=300000 --override max.connections.per.ip=2147483647
+            --override num.partitions=1 --override producer.purgatory.purge.interval.requests=1000
+            --override replica.fetch.backoff.ms=1000 --override replica.fetch.max.bytes=1048576
+            --override replica.fetch.response.max.bytes=10485760 --override reserved.broker.max.id=1000 '
+          env:
+          - name: KAFKA_HEAP_OPTS
+            value: -Xmx512M -Xms512M
+          - name: KAFKA_OPTS
+            value: -Dlogging.level=INFO
+          image: gcr.io/google_samples/k8skafka:v1
+          imagePullPolicy: Always
+          name: k8skafka
+          ports:
+          - containerPort: 9093
+            name: server
+            protocol: TCP
+          readinessProbe:
+            exec:
+              command:
+              - sh
+              - -c
+              - /opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server=localhost:9093
+            failureThreshold: 3
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /var/lib/kafka
+            name: datadir
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          fsGroup: 1000
+          runAsUser: 1000
+        terminationGracePeriodSeconds: 300
+    updateStrategy:
+      type: OnDelete
+    volumeClaimTemplates:
+    - metadata:
+        creationTimestamp: null
+        name: datadir
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 10Gi
+        volumeMode: Filesystem
+      status:
+        phase: Pending
+  status:
+    collisionCount: 0
+    currentReplicas: 3
+    currentRevision: kafka-56fc88685
+    observedGeneration: 1
+    readyReplicas: 3
+    replicas: 3
+    updateRevision: kafka-56fc88685
+    updatedReplicas: 3
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"StatefulSet","metadata":{"annotations":{},"labels":{"app":"logstash"},"name":"logstash","namespace":"user111"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"logstash"}},"serviceName":"logstash","template":{"metadata":{"labels":{"app":"logstash"}},"spec":{"containers":[{"env":[{"name":"HTTP_HOST","value":"0.0.0.0"},{"name":"HTTP_PORT","value":"9600"},{"name":"ELASTICSEARCH_HOST","value":"elasticsearch"},{"name":"ELASTICSEARCH_PORT","value":"9200"},{"name":"LS_JAVA_OPTS","value":"-Xmx1g -Xms1g"},{"name":"CONFIG_RELOAD_AUTOMATIC","value":"true"},{"name":"PATH_CONFIG","value":"/usr/share/logstash/pipeline"},{"name":"PATH_DATA","value":"/usr/share/logstash/data"},{"name":"QUEUE_CHECKPOINT_WRITES","value":"1"},{"name":"QUEUE_DRAIN","value":"true"},{"name":"QUEUE_MAX_BYTES","value":"1gb"},{"name":"QUEUE_TYPE","value":"persisted"}],"image":"docker.elastic.co/logstash/logstash-oss:7.1.1","livenessProbe":{"httpGet":{"path":"/","port":"monitor"},"initialDelaySeconds":60},"name":"logstash","ports":[{"containerPort":9600,"name":"monitor","protocol":"TCP"},{"containerPort":8080,"name":"http","protocol":"TCP"},{"containerPort":5044,"name":"beats","protocol":"TCP"}],"readinessProbe":{"httpGet":{"path":"/","port":"monitor"},"initialDelaySeconds":60},"volumeMounts":[{"mountPath":"/usr/share/logstash/data","name":"data"},{"mountPath":"/usr/share/logstash/pipeline","name":"pipeline"}]},{"args":["sleep 60; exec /logstash_exporter\n  --logstash.endpoint=http://localhost:9600\n  --web.listen-address=:9198"],"command":["/bin/sh","-c"],"env":[{"name":"HTTP_HOST","value":"0.0.0.0"},{"name":"HTTP_PORT","value":"9600"},{"name":"ELASTICSEARCH_HOST","value":"elasticsearch"},{"name":"ELASTICSEARCH_PORT","value":"9200"},{"name":"LS_JAVA_OPTS","value":"-Xmx1g -Xms1g"},{"name":"CONFIG_RELOAD_AUTOMATIC","value":"true"},{"name":"PATH_CONFIG","value":"/usr/share/logstash/pipeline"},{"name":"PATH_DATA","value":"/usr/share/logstash/data"},{"name":"QUEUE_CHECKPOINT_WRITES","value":"1"},{"name":"QUEUE_DRAIN","value":"true"},{"name":"QUEUE_MAX_BYTES","value":"1gb"},{"name":"QUEUE_TYPE","value":"persisted"}],"image":"bonniernews/logstash_exporter:v0.1.2","livenessProbe":{"failureThreshold":8,"httpGet":{"path":"/metrics","port":"ls-exporter"},"periodSeconds":15,"successThreshold":1,"timeoutSeconds":60},"name":"logstash-exporter","ports":[{"containerPort":9198,"name":"ls-exporter","protocol":"TCP"}],"readinessProbe":{"failureThreshold":8,"httpGet":{"path":"/metrics","port":"ls-exporter"},"periodSeconds":15,"successThreshold":1,"timeoutSeconds":60}}],"securityContext":{"fsGroup":1000,"runAsUser":1000},"volumes":[{"configMap":{"name":"logstash-pipeline"},"name":"pipeline"}]}},"volumeClaimTemplates":[{"metadata":{"name":"data"},"spec":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"2Gi"}}}}]}}
+    creationTimestamp: "2019-12-07T13:28:00Z"
+    generation: 6
+    labels:
+      app: logstash
+    name: logstash
+    namespace: user111
+    resourceVersion: "559106"
+    selfLink: /apis/apps/v1/namespaces/user111/statefulsets/logstash
+    uid: 63a497b1-18f5-11ea-94c4-42010a9c0043
+  spec:
+    podManagementPolicy: OrderedReady
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: logstash
+    serviceName: logstash
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: logstash
+      spec:
+        containers:
+        - env:
+          - name: HTTP_HOST
+            value: 0.0.0.0
+          - name: HTTP_PORT
+            value: "9600"
+          - name: ELASTICSEARCH_HOST
+            value: elasticsearch
+          - name: ELASTICSEARCH_PORT
+            value: "9200"
+          - name: LS_JAVA_OPTS
+            value: -Xmx1g -Xms1g
+          - name: CONFIG_RELOAD_AUTOMATIC
+            value: "true"
+          - name: PATH_CONFIG
+            value: /usr/share/logstash/pipeline
+          - name: PATH_DATA
+            value: /usr/share/logstash/data
+          - name: QUEUE_CHECKPOINT_WRITES
+            value: "1"
+          - name: QUEUE_DRAIN
+            value: "true"
+          - name: QUEUE_MAX_BYTES
+            value: 1gb
+          - name: QUEUE_TYPE
+            value: persisted
+          image: docker.elastic.co/logstash/logstash-oss:7.1.1
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: monitor
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: logstash
+          ports:
+          - containerPort: 9600
+            name: monitor
+            protocol: TCP
+          - containerPort: 8080
+            name: http
+            protocol: TCP
+          - containerPort: 5044
+            name: beats
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: monitor
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /usr/share/logstash/data
+            name: data
+          - mountPath: /usr/share/logstash/pipeline
+            name: pipeline
+        - args:
+          - |-
+            sleep 60; exec /logstash_exporter
+              --logstash.endpoint=http://localhost:9600
+              --web.listen-address=:9198
+          command:
+          - /bin/sh
+          - -c
+          env:
+          - name: HTTP_HOST
+            value: 0.0.0.0
+          - name: HTTP_PORT
+            value: "9600"
+          - name: ELASTICSEARCH_HOST
+            value: elasticsearch
+          - name: ELASTICSEARCH_PORT
+            value: "9200"
+          - name: LS_JAVA_OPTS
+            value: -Xmx1g -Xms1g
+          - name: CONFIG_RELOAD_AUTOMATIC
+            value: "true"
+          - name: PATH_CONFIG
+            value: /usr/share/logstash/pipeline
+          - name: PATH_DATA
+            value: /usr/share/logstash/data
+          - name: QUEUE_CHECKPOINT_WRITES
+            value: "1"
+          - name: QUEUE_DRAIN
+            value: "true"
+          - name: QUEUE_MAX_BYTES
+            value: 1gb
+          - name: QUEUE_TYPE
+            value: persisted
+          image: bonniernews/logstash_exporter:v0.1.2
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 8
+            httpGet:
+              path: /metrics
+              port: ls-exporter
+              scheme: HTTP
+            periodSeconds: 15
+            successThreshold: 1
+            timeoutSeconds: 60
+          name: logstash-exporter
+          ports:
+          - containerPort: 9198
+            name: ls-exporter
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 8
+            httpGet:
+              path: /metrics
+              port: ls-exporter
+              scheme: HTTP
+            periodSeconds: 15
+            successThreshold: 1
+            timeoutSeconds: 60
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          fsGroup: 1000
+          runAsUser: 1000
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - configMap:
+            defaultMode: 420
+            name: logstash-pipeline
+          name: pipeline
+    updateStrategy:
+      rollingUpdate:
+        partition: 0
+      type: RollingUpdate
+    volumeClaimTemplates:
+    - metadata:
+        creationTimestamp: null
+        name: data
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 2Gi
+        volumeMode: Filesystem
+      status:
+        phase: Pending
+  status:
+    collisionCount: 0
+    currentReplicas: 1
+    currentRevision: logstash-5bbc5785d6
+    observedGeneration: 6
+    readyReplicas: 1
+    replicas: 1
+    updateRevision: logstash-5bbc5785d6
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1beta2","kind":"StatefulSet","metadata":{"annotations":{},"labels":{"app":"prometheus","app.kubernetes.io/component":"prometheus"},"name":"prometheus","namespace":"user111"},"spec":{"selector":{"matchLabels":{"app":"prometheus","app.kubernetes.io/component":"prometheus"}},"serviceName":"prometheus","template":{"metadata":{"labels":{"app":"prometheus","app.kubernetes.io/component":"prometheus"}},"spec":{"affinity":{"podAntiAffinity":{"requiredDuringSchedulingIgnoredDuringExecution":[{"labelSelector":{"matchExpressions":[{"key":"k8s-app","operator":"In","values":["prometheus"]}]},"topologyKey":"kubernetes.io/hostname"}]}},"containers":[{"args":["--config.file=/etc/config/prometheus.yaml","--storage.tsdb.path=/data","--web.console.libraries=/etc/prometheus/console_libraries","--web.console.templates=/etc/prometheus/consoles","--web.enable-lifecycle"],"image":"prom/prometheus","imagePullPolicy":"IfNotPresent","livenessProbe":{"httpGet":{"path":"/-/healthy","port":9090},"initialDelaySeconds":30,"timeoutSeconds":30},"name":"prometheus-server","ports":[{"containerPort":9090}],"readinessProbe":{"httpGet":{"path":"/-/ready","port":9090},"initialDelaySeconds":30,"timeoutSeconds":30},"resources":{"requests":{"cpu":"200m","memory":"1000Mi"}},"volumeMounts":[{"mountPath":"/etc/config","name":"config-volume"},{"mountPath":"/data","name":"prometheus-data","subPath":""}]}],"initContainers":[{"command":["chown","-R","65534:65534","/data"],"image":"busybox","imagePullPolicy":"Always","name":"init-chown-data","volumeMounts":[{"mountPath":"/data","name":"prometheus-data","subPath":""}]}],"terminationGracePeriodSeconds":300,"volumes":[{"configMap":{"name":"prometheus-config"},"name":"config-volume"}]}},"volumeClaimTemplates":[{"metadata":{"labels":{"app":"prometheus","app.kubernetes.io/component":"prometheus"},"name":"prometheus-data"},"spec":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"16Gi"}},"storageClassName":"standard"}}]}}
+    creationTimestamp: "2019-12-07T15:30:26Z"
+    generation: 1
+    labels:
+      app: prometheus
+      app.kubernetes.io/component: prometheus
+    name: prometheus
+    namespace: user111
+    resourceVersion: "563411"
+    selfLink: /apis/apps/v1/namespaces/user111/statefulsets/prometheus
+    uid: 7dec8de1-1906-11ea-94c4-42010a9c0043
+  spec:
+    podManagementPolicy: OrderedReady
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: prometheus
+        app.kubernetes.io/component: prometheus
+    serviceName: prometheus
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: prometheus
+          app.kubernetes.io/component: prometheus
+      spec:
+        affinity:
+          podAntiAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                - key: k8s-app
+                  operator: In
+                  values:
+                  - prometheus
+              topologyKey: kubernetes.io/hostname
+        containers:
+        - args:
+          - --config.file=/etc/config/prometheus.yaml
+          - --storage.tsdb.path=/data
+          - --web.console.libraries=/etc/prometheus/console_libraries
+          - --web.console.templates=/etc/prometheus/consoles
+          - --web.enable-lifecycle
+          image: prom/prometheus
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /-/healthy
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 30
+          name: prometheus-server
+          ports:
+          - containerPort: 9090
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /-/ready
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 30
+          resources:
+            requests:
+              cpu: 200m
+              memory: 1000Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /etc/config
+            name: config-volume
+          - mountPath: /data
+            name: prometheus-data
+        dnsPolicy: ClusterFirst
+        initContainers:
+        - command:
+          - chown
+          - -R
+          - 65534:65534
+          - /data
+          image: busybox
+          imagePullPolicy: Always
+          name: init-chown-data
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /data
+            name: prometheus-data
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 300
+        volumes:
+        - configMap:
+            defaultMode: 420
+            name: prometheus-config
+          name: config-volume
+    updateStrategy:
+      rollingUpdate:
+        partition: 0
+      type: RollingUpdate
+    volumeClaimTemplates:
+    - metadata:
+        creationTimestamp: null
+        labels:
+          app: prometheus
+          app.kubernetes.io/component: prometheus
+        name: prometheus-data
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 16Gi
+        storageClassName: standard
+        volumeMode: Filesystem
+      status:
+        phase: Pending
+  status:
+    collisionCount: 0
+    currentReplicas: 1
+    currentRevision: prometheus-7c5cd845db
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updateRevision: prometheus-7c5cd845db
+    updatedReplicas: 1
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""

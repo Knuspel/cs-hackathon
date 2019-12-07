@@ -1,0 +1,143 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  data:
+    filebeat.yml: |
+      filebeat.prospectors:
+      - input_type: log
+        paths:
+          - "/var/log"
+      output.kafka:
+        hosts: ["kafka-svc:9093"]
+        topic: "kube-logs"
+        required_acks: 1
+        compression: gzip
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"filebeat.yml":"filebeat.prospectors:\n- input_type: log\n  paths:\n    - \"/var/log\"\noutput.kafka:\n  hosts: [\"kafka-svc:9093\"]\n  topic: \"kube-logs\"\n  required_acks: 1\n  compression: gzip\n"},"kind":"ConfigMap","metadata":{"annotations":{},"name":"filebeat-config","namespace":"user111"}}
+    creationTimestamp: "2019-12-07T13:54:00Z"
+    name: filebeat-config
+    namespace: user111
+    resourceVersion: "565097"
+    selfLink: /api/v1/namespaces/user111/configmaps/filebeat-config
+    uid: 0520d30f-18f9-11ea-94c4-42010a9c0043
+- apiVersion: v1
+  data:
+    filter_main.conf: |-
+      filter {
+      }
+    input_main.conf: |-
+      input {
+        kafka {
+          id => "kafka-input"
+          bootstrap_servers => "http://kafka-svc:9093"
+          topics => ["kube-logs"]
+        }
+      }
+    output_main.conf: |-
+      output {
+        # check whether a kubernetes object exists on the log entry
+        elasticsearch {
+          hosts => ["${ELASTICSEARCH_HOST}:${ELASTICSEARCH_PORT}"]
+          index => "logstash-%{+YYYY.MM.dd}"
+        }
+      }
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"filter_main.conf":"filter {\n}","input_main.conf":"input {\n  kafka {\n    id =\u003e \"kafka-input\"\n    bootstrap_servers =\u003e \"http://kafka-svc:9093\"\n    topics =\u003e [\"kube-logs\"]\n  }\n}","output_main.conf":"output {\n  # check whether a kubernetes object exists on the log entry\n  elasticsearch {\n    hosts =\u003e [\"${ELASTICSEARCH_HOST}:${ELASTICSEARCH_PORT}\"]\n    index =\u003e \"logstash-%{+YYYY.MM.dd}\"\n  }\n}"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"app":"logstash"},"name":"logstash-pipeline","namespace":"user111"}}
+    creationTimestamp: "2019-12-07T13:28:00Z"
+    labels:
+      app: logstash
+    name: logstash-pipeline
+    namespace: user111
+    resourceVersion: "543013"
+    selfLink: /api/v1/namespaces/user111/configmaps/logstash-pipeline
+    uid: 639f2f8b-18f5-11ea-94c4-42010a9c0043
+- apiVersion: v1
+  data:
+    prometheus.yaml: |
+      # my global config
+      global:
+        scrape_interval:     15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+        evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+        # scrape_timeout is set to the global default (10s).
+
+      # Alertmanager configuration
+      alerting:
+        alertmanagers:
+        - static_configs:
+          - targets:
+            # - alertmanager:9093
+
+      # Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+      rule_files:
+        # - "first_rules.yml"
+        # - "second_rules.yml"
+
+      # A scrape configuration containing exactly one endpoint to scrape:
+      # Here it's Prometheus itself.
+      scrape_configs:
+        # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+        - job_name: 'prometheus'
+
+          # metrics_path defaults to '/metrics'
+          # scheme defaults to 'http'.
+
+          static_configs:
+          - targets: ['localhost:9090']
+  kind: ConfigMap
+  metadata:
+    creationTimestamp: "2019-12-07T15:29:49Z"
+    name: prometheus
+    namespace: user111
+    resourceVersion: "561969"
+    selfLink: /api/v1/namespaces/user111/configmaps/prometheus
+    uid: 682e35ac-1906-11ea-94c4-42010a9c0043
+- apiVersion: v1
+  data:
+    prometheus.yaml: |
+      # my global config
+      global:
+        scrape_interval:     15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+        evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+        # scrape_timeout is set to the global default (10s).
+
+      # Alertmanager configuration
+      alerting:
+        alertmanagers:
+        - static_configs:
+          - targets:
+            # - alertmanager:9093
+
+      # Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+      rule_files:
+        # - "first_rules.yml"
+        # - "second_rules.yml"
+
+      # A scrape configuration containing exactly one endpoint to scrape:
+      # Here it's Prometheus itself.
+      scrape_configs:
+        # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+        - job_name: 'prometheus'
+
+          # metrics_path defaults to '/metrics'
+          # scheme defaults to 'http'.
+
+          static_configs:
+          - targets: ['localhost:9090']
+  kind: ConfigMap
+  metadata:
+    creationTimestamp: "2019-12-07T15:33:32Z"
+    name: prometheus-config
+    namespace: user111
+    resourceVersion: "562863"
+    selfLink: /api/v1/namespaces/user111/configmaps/prometheus-config
+    uid: ecf58c82-1906-11ea-94c4-42010a9c0043
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""
